@@ -113,8 +113,8 @@ các block còn lại.
 **Phần BONUS đã hoàn thành:** workflow GitHub Actions chạy trên push và pull
 request, cài dependency, kiểm thử phần không phụ thuộc deployment, rồi build
 Docker image. Riêng push vào `main` mới được deploy lên Railway, và job deploy
-phụ thuộc cả test lẫn build nên revision lỗi không thể đi tiếp. Token Railway
-được lưu trong GitHub Actions Secrets, không nằm trong repository.
+phụ thuộc cả test lẫn build nên revision lỗi không thể đi tiếp. Railway API
+token được lưu trong GitHub Actions Secrets, không nằm trong repository.
 
 Điều tôi thu hoạch được là CI và CD cần tách thành các cổng rõ ràng: pull
 request phải phát hiện lỗi mà không chạm production; build phải xác nhận đúng

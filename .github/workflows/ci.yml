@@ -50,7 +50,7 @@ jobs:
         run: npm install --global @railway/cli
       - name: Deploy tested revision
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
         run: >-
           railway up --ci --service agent --environment production
           --project dc288539-0965-47b8-b79c-384223cf1ff3

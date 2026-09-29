@@ -93,8 +93,8 @@ Rate limit (15 requests):
 Workflow `.github/workflows/ci.yml` đã được triển khai với chuỗi phụ thuộc
 `test → build → deploy`. Workflow chạy test và build Docker image cho cả push
 lẫn pull request; job deploy chỉ chạy khi push vào nhánh `main` và chỉ sau khi
-hai job trước thành công. `RAILWAY_TOKEN` được đặt trong GitHub Actions Secrets,
-không lưu giá trị trong source hoặc tài liệu.
+hai job trước thành công. `RAILWAY_API_TOKEN` được đặt trong GitHub Actions
+Secrets, không lưu giá trị trong source hoặc tài liệu.
 
 Thu hoạch chính của tôi là một deployment thành công không chỉ cần code đúng:
 pipeline còn phải kiểm tra đúng phạm vi ở từng môi trường. Test cần service
