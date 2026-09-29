@@ -87,3 +87,18 @@ Rate limit (15 requests):
 
 - `screenshots/dashboard.png` — trang quản lý service trên platform
 - `screenshots/health.png` — kết quả gọi `/health` từ trình duyệt hoặc curl
+
+## Bonus CI/CD
+
+Workflow `.github/workflows/ci.yml` đã được triển khai với chuỗi phụ thuộc
+`test → build → deploy`. Workflow chạy test và build Docker image cho cả push
+lẫn pull request; job deploy chỉ chạy khi push vào nhánh `main` và chỉ sau khi
+hai job trước thành công. `RAILWAY_TOKEN` được đặt trong GitHub Actions Secrets,
+không lưu giá trị trong source hoặc tài liệu.
+
+Thu hoạch chính của tôi là một deployment thành công không chỉ cần code đúng:
+pipeline còn phải kiểm tra đúng phạm vi ở từng môi trường. Test cần service
+cloud thật (`test_cp5.py`) không phù hợp với CI trước deploy, nên CI chạy các
+test độc lập trước; trạng thái production được xác nhận riêng sau deploy. Cách
+tách này giúp pull request kiểm tra an toàn, trong khi nhánh `main` vẫn có cổng
+chất lượng bắt buộc trước khi đưa revision mới lên Railway.

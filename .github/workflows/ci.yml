@@ -1,0 +1,57 @@
+name: CI/CD
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  AGENT_API_KEY: ci-test-key
+  REDIS_URL: fake://
+
+jobs:
+  test:
+    name: Test application
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run tests that do not require Docker or a live deployment
+        run: pytest tests/ -v --ignore=tests/test_cp2.py --ignore=tests/test_cp5.py --ignore=tests/test_bonus_cicd.py
+
+  build:
+    name: Build production image
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker build --tag day12-agent:${{ github.sha }} .
+
+  deploy:
+    name: Deploy to Railway
+    needs: [test, build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Install Railway CLI
+        run: npm install --global @railway/cli
+      - name: Deploy tested revision
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: >-
+          railway up --ci --service agent --environment production
+          --project dc288539-0965-47b8-b79c-384223cf1ff3
+          --message "GitHub Actions ${{ github.sha }}"

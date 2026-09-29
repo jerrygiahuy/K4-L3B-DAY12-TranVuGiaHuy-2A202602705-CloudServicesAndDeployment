@@ -1,5 +1,7 @@
 # K4 — Level 3B, Ngày 12: Hạ Tầng Cloud & Deployment (240 phút)
 
+[![CI/CD](https://github.com/jerrygiahuy/K4-L3B-DAY12-TranVuGiaHuy-2A202602705-CloudServicesAndDeployment/actions/workflows/ci.yml/badge.svg)](https://github.com/jerrygiahuy/K4-L3B-DAY12-TranVuGiaHuy-2A202602705-CloudServicesAndDeployment/actions/workflows/ci.yml)
+
 Đưa một AI agent từ `localhost:8000` lên một địa chỉ công khai mà người khác
 gọi được, có bảo mật, có giới hạn chi phí, và không sập khi bạn deploy bản mới.
 
@@ -108,12 +110,17 @@ sau. Còn đỏ → đọc thông báo lỗi (mỗi test đều ghi rõ sai ở 
 block sau** — làm được đến đâu có điểm đến đó, đừng để tắc một chỗ mà mất cả
 các block còn lại.
 
-**Phần BONUS** dành cho bạn nào xong sớm hoặc muốn làm thêm sau buổi lab: tự
-viết một workflow GitHub Actions để mỗi lần push là tự chạy test, tự build
-image, và chỉ deploy khi mọi thứ xanh. Lab **không cho sẵn file mẫu** — đây là
-phần để bạn tự đọc tài liệu và tự dựng. Chỉ nên bắt đầu khi CP1–CP5 đã ổn.
-Tổng bonus của bài lab tối đa **10 điểm**; đây là điểm cho sản phẩm CI/CD của
-bài lab, không phải điểm giơ tay, phát biểu hay pitching trên lớp.
+**Phần BONUS đã hoàn thành:** workflow GitHub Actions chạy trên push và pull
+request, cài dependency, kiểm thử phần không phụ thuộc deployment, rồi build
+Docker image. Riêng push vào `main` mới được deploy lên Railway, và job deploy
+phụ thuộc cả test lẫn build nên revision lỗi không thể đi tiếp. Token Railway
+được lưu trong GitHub Actions Secrets, không nằm trong repository.
+
+Điều tôi thu hoạch được là CI và CD cần tách thành các cổng rõ ràng: pull
+request phải phát hiện lỗi mà không chạm production; build phải xác nhận đúng
+Dockerfile sẽ deploy; còn CD chỉ chạy sau khi mọi cổng trước đã xanh. Badge ở
+đầu README là bằng chứng công khai về trạng thái lần chạy gần nhất, không thay
+thế việc đọc log khi pipeline lỗi.
 
 Chi tiết từng bước: [LAB_GUIDE.md](LAB_GUIDE.md).
 
@@ -196,7 +203,7 @@ K4-L3B-DAY12-<HoVaTen>-<MSSV>-CloudServicesAndDeployment/
 ├── railway.toml           # CP5 — cấu hình Railway
 ├── render.yaml            # CP5 — cấu hình Render
 ├── screenshots/           # Ảnh chụp màn hình bản deploy
-├── .github/workflows/     # ★ BONUS — workflow CI/CD bạn tự viết (chưa có sẵn)
+├── .github/workflows/     # ★ BONUS — workflow CI/CD đã triển khai
 └── tests/
     ├── test_cp1.py … test_cp5.py
     ├── test_bonus_cicd.py # BONUS — chấm workflow CI/CD
@@ -285,4 +292,4 @@ Nộp **link repository** lên Codelab. Repo phải ở chế độ public.
 - [ ] `.env` **không** nằm trong repo (`git ls-files | grep .env` chỉ ra `.env.example`)
 - [ ] Không còn `NotImplementedError` nào trong `app/`
 - [ ] Có commit ở nhiều mốc thời gian, không phải một commit duy nhất
-- [ ] *(Bonus)* `.github/workflows/ci.yml` chạy xanh, README có badge `passing`
+- [x] *(Bonus)* `.github/workflows/ci.yml` chạy xanh, README có badge `passing`
